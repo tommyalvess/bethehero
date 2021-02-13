@@ -15,5 +15,11 @@ module.exports = {
         
         return res.json(ong);
 
+    },
+
+    async show(req, res){
+        
+        return res.json("FOIII");
+
     }
 }

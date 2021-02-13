@@ -21,6 +21,9 @@ const routes = express.Router();
 //Route: para identificar recursos
 // Resquest Body: criar ou alterar o recurso
 
+
+routes.post('/', SessionControler.show);
+
 routes.post('/sessions', SessionControler.create);
 
 routes.get('/ongs', OngsController.index);
