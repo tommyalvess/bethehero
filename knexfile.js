@@ -1,7 +1,7 @@
 // Update with your config settings.
 
 module.exports = {
-
+//ambiente na nossa maquina
   development: {
     client: 'sqlite3',
     connection: {
@@ -11,8 +11,9 @@ module.exports = {
       directory: './src/database/migrations'
     },
     useNullAsDefault: true, // O padrão Sqlite não aceita inserção de default values.
+     
   },
-
+// simula a preodução p/ time dev possa testar online
   staging: {
     client: 'mysql',
     connection: {
@@ -22,28 +23,22 @@ module.exports = {
       password: 'app125517',
       charset: 'utf8'
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
     migrations: {
       directory: './src/database/migrations'
     }
   },
-
+//ambiente para o cliente acessar 
   production: {
-    client: 'postgresql',
+    client: 'mysql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
+      host : '160.153.92.200',
+      database: 'dbapptransescolar',
+      user:     'app_transescolar',
+      password: 'app125517',
+      charset: 'utf8'
     },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: './src/database/migrations'
     }
   }
 
