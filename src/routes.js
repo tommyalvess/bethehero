@@ -22,10 +22,10 @@ const routes = express.Router();
 // Resquest Body: criar ou alterar o recurso
 
 
-routes.post('/', SessionControler.show);
 
 routes.post('/sessions', SessionControler.create);
 
+routes.get('/ongs', OngsController.show);
 routes.get('/ongs', OngsController.index);
 routes.post('/ongs', celebrate({
     [Segments.BODY]: Joi.object().keys({

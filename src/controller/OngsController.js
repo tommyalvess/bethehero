@@ -30,5 +30,9 @@ module.exports = {
         console.log(data);
 
         return res.json({id});
+    },
+
+    show(req, res){
+        return res.status(200).json("'FOii'");     
     }
 };
