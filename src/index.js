@@ -12,11 +12,10 @@ const app = express();
 app.use(cors()); // assim permite q todos acessem
 
 const bodyParser = require('body-parser');
-
 //Declarando q todas as requisições serão com corpo json
 //Use o use toda vez q for referenciar o uso de algo.
-app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(routes); 
 app.use(errors());
