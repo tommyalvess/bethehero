@@ -38,7 +38,13 @@ routes.post('/ongs', celebrate({
 
 routes.get('/profile', PerfileOngsController.index);
 
-routes.post('/incidents', IncidentsController.create);
+routes.post('/incidents', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        title: Joi.string().required(),
+        descriptions: Joi.string().required(),
+        value: Joi.string().required(),
+    })
+}), IncidentsController.create);
 routes.get('/incidents', IncidentsController.index);
 routes.delete('/incidents/:id', IncidentsController.delete);
 
