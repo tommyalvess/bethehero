@@ -42,7 +42,7 @@ routes.post('/incidents', celebrate({
     [Segments.BODY]: Joi.object().keys({
         title: Joi.string().required(),
         descriptions: Joi.string().required(),
-        value: Joi.string().required(),
+        value: Joi.number().required(),
     })
 }), IncidentsController.create);
 routes.get('/incidents', IncidentsController.index);
