@@ -29,7 +29,7 @@ module.exports = {
   },
 //ambiente para o cliente acessar 
   production: {
-    client: 'pq',
+    client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
       directory: './src/database/migrations'
