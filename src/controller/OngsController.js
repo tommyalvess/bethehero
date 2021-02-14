@@ -32,6 +32,41 @@ module.exports = {
         return res.json({id});
     },
 
+    async delete(req, res){
+        const { id } = req.params;
+        const idO = req.headers.authorization;
+
+        function isEmpty(obj) {
+            return Object.keys(obj).length === 0;
+        }
+
+        try {
+            const find = await connection('ongs').where('id', id)
+            .select('*');
+
+            if(!isEmpty(find)){
+                    
+                const ongs = await connection('ongs')
+                .where('id', id)
+                .select('id')
+                .first();
+                //incidents.ong_id result da busca
+                if(ongs.id != idO){
+                    return res.status(401).json('Operação não autorizada');
+                }    
+                await connection('ongs').where('id', id).delete();
+                return res.status(200).json({"msg": "Deletado com sucesso!"});
+
+            }else{
+                return res.status(500).json("Nada Localizado!");
+            }             
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json("Erro! Tente novamente...");
+        } 
+
+    },
+
     show(req, res){
         return res.status(200).json("'FOii'");     
     }
