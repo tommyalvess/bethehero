@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
-
   },
   "keywords": [],
   "author": "",
@@ -17,7 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.1",
-    "sqlite3": "^4.2.0"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
