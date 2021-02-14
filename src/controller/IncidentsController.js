@@ -27,41 +27,65 @@ module.exports = {
     async create(req, res){
         //dados da autenticação do usuario
         //Tudo que caracteristica contexto da requisição fica no headers
-        const { title, descriptions, value } = req.body;
-        const ong_id = req.headers.authorization;
-        const data = req.body;
-
-        //o primeiro valor do array será armazenada em uma variavel chamada id
-        const [id] = await connection('incidents').insert({
-            title,
-            descriptions,
-            value,
-            ong_id,
-        });
-
-        console.log(data);
         
-        return res.json({ id });
+            const { title, descriptions, value } = req.body;
+            const ong_id = req.headers.authorization;
+            const data = req.body;
+
+            //o primeiro valor do array será armazenada em uma variavel chamada id
+            await connection('incidents').insert({
+                title,
+                descriptions,
+                value,
+                ong_id,
+            }).catch(error => {
+                var err = error.response.data.errors
+                console.log(err);
+              });
+
+            console.log(data);
+            
+            return res.json({ id });
+       
     },
     //deletando dados
     //first retorna uma resultado
     async delete(req, res){
+        function isEmpty(obj) {
+            return Object.keys(obj).length === 0;
+        }
+
         const { id } = req.params;
         const ong_id = req.headers.authorization;
-        const incidents = await connection('incidents')
-            .where('id', id)
-            .select('ong_id')
-            .first();
-        //incidents.ong_id result da busca
-        if(incidents.ong_id != ong_id){
-            return res.status(401).json('Operação não autorizada');
-        }    
 
-        await connection('incidents').where('id', id).delete();
+        try {
+            const find = await connection('incidents').where('id', id)
+            .select('*');
 
-        return res.status(204).send();
+            if(!isEmpty(find)){
+
+                const incidents = await connection('incidents')
+                .where('id', id)
+                .select('ong_id')
+                .first();
+                //incidents.ong_id result da busca
+                if(incidents.ong_id != ong_id){
+                    return res.status(401).json('Operação não autorizada');
+                }    
+
+                await connection('incidents').where('id', id).delete();
+                return res.status(204).json("Deletado com sucesso!");
+            }else{
+                return res.status(500).json("Nada Localizado!");
+            }      
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json("Erro! Tente novamente...");
+        } 
 
     }
+
+    
 
 };
 
