@@ -41,11 +41,9 @@ module.exports = {
             }).catch(error => {
                 var err = error.response.data.errors
                 console.log(err);
-              });
-
-            console.log(data);
+            });
             
-            return res.json({ id });
+            return res.status(200).json({"msg": "Inserido com sucesso!"});
        
     },
     //deletando dados
@@ -74,7 +72,7 @@ module.exports = {
                 }    
 
                 await connection('incidents').where('id', id).delete();
-                return res.status(204).json("Deletado com sucesso!");
+                return res.status(200).json({"msg": "Deletado com sucesso!"});
             }else{
                 return res.status(500).json("Nada Localizado!");
             }      
