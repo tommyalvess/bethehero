@@ -25,7 +25,6 @@ const routes = express.Router();
 
 routes.post('/sessions', SessionControler.create);
 
-routes.get('/ongs', OngsController.show);
 routes.get('/ongs', OngsController.index);
 routes.post('/ongs', celebrate({
     [Segments.BODY]: Joi.object().keys({
