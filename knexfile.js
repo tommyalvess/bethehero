@@ -29,14 +29,8 @@ module.exports = {
   },
 //ambiente para o cliente acessar 
   production: {
-    client: 'mysql',
-    connection: {
-      host : '160.153.92.200',
-      database: 'dbapptransescolar',
-      user:     'app_transescolar',
-      password: 'app125517',
-      charset: 'utf8'
-    },
+    client: 'pq',
+    connection: process.env.DATABASE_URL,
     migrations: {
       directory: './src/database/migrations'
     }
