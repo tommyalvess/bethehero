@@ -3,11 +3,9 @@ const connection = require('../database/connection');
 module.exports = {
     //listagem de dados
     async index(req, res){
-        const { page = 1 } = req.query;
+          const { page = 1 } = req.query;
 
-        const [count] = await connection('incidents').count();
-
-        console.log(count);
+        const [count] = await connection('incidents').count({count: '*'});
         
         //Esquema de paginação e limitando o numero 
         //que vem do bd 
@@ -18,7 +16,8 @@ module.exports = {
         .select('incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf');
 
         //Enviado para o cabeçalho o tatal de registro
-        res.header('X-Total-Count', count['count(*)']);
+        res.header('X-Total-Count', count.count);
+        console.log(count.count);
 
         return res.json(incidents);
     },
