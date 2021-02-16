@@ -1,9 +1,12 @@
+const { update } = require('../database/connection');
 const connection = require('../database/connection');
+
+const helpers = require('../utils/helper');
 
 module.exports = {
     //listagem de dados
     async index(req, res){
-          const { page = 1 } = req.query;
+        const { page = 1 } = req.query;
 
         const [count] = await connection('incidents').count({count: '*'});
         
@@ -29,7 +32,6 @@ module.exports = {
         
             const { title, descriptions, value } = req.body;
             const ong_id = req.headers.authorization;
-            const data = req.body;
 
             //o primeiro valor do array será armazenada em uma variavel chamada id
             await connection('incidents').insert({
@@ -45,21 +47,19 @@ module.exports = {
             return res.status(200).json({"msg": "Inserido com sucesso!"});
        
     },
-    //deletando dados
-    //first retorna uma resultado
-    async delete(req, res){
-        function isEmpty(obj) {
-            return Object.keys(obj).length === 0;
-        }
 
+    //deletando dados
+    async delete(req, res){
+       
         const { id } = req.params;
         const ong_id = req.headers.authorization;
 
         try {
             const find = await connection('incidents').where('id', id)
-            .select('*');
+            .select('id')
+            .first();
 
-            if(!isEmpty(find)){
+            if(!helpers.isEmpty(find)){
 
                 const incidents = await connection('incidents')
                 .where('id', id)
@@ -80,9 +80,50 @@ module.exports = {
             return res.status(500).json("Erro! Tente novamente...");
         } 
 
-    }
+    },
 
-    
+    //update incidente
+    async update(req, res){
+
+        const { title, descriptions, value } = req.body;
+        const { id } = req.params;
+        const ong_id = req.headers.authorization;
+
+        const find = await connection('incidents')
+        .where('id', id)
+        .select('id')
+        .first();
+        
+        if(!helpers.isEmpty(find)){
+
+            try {
+                const incidents = await connection('incidents')
+                .where('id', id)
+                .select('ong_id')
+                .first();
+
+                if(incidents.ong_id != ong_id){
+                    return res.status(401).json('Operação não autorizada');
+                }
+
+                await connection('incidents')
+                    .where('id', id)
+                    .update({
+                        title,
+                        descriptions,
+                        value,
+                    });
+                    return res.status(200).json({"msg": "Atualizado com sucesso!"});
+                       
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json("Erro! Tente novamente...");
+            }
+        }else{
+            return res.status(500).json("Nada Localizado!");
+        }
+
+    }
 
 };
 

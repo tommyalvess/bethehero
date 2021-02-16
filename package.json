@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "knex:migrate": "knex --knexfile knexfile.js migrate:latest",
+    "knex:migrate:rollback": "knex --knexfile knexfile.js migrate:rollback"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +19,8 @@
     "express": "^4.17.1",
     "knex": "^0.21.1",
     "mysql": "^2.18.1",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "sqlite3": "5.0.1"
   },
   "devDependencies": {
     "eslint": "^7.0.0",

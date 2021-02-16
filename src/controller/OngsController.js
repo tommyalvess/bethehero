@@ -2,10 +2,33 @@
 //Mas usar um metodo p gerar uma string aleatoria.
 const crypto = require('crypto');
 const connection = require('../database/connection');
+const helpers = require('../utils/helper');
+
 
 // quando o noide chegar nesse codigo ele vai esperar e depois continuar.
 //declaramos o async e colocamos o await
 module.exports = {
+
+    async show(req, res){
+        const { id } = req.params;
+
+        try {
+            const ongs = await connection('ongs')
+            .where('id', id)
+            .select('*')
+            .first();
+
+            if(ongs === null || ongs === undefined){
+                return res.status(500).json("Nada Localizado!");
+            }else{
+                return res.status(200).json(ongs);
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json("Erro! Tente novamente...");
+        }
+        
+    },
 
     async index(req, res) {
         const ongs = await connection('ongs').select('*');
@@ -36,15 +59,13 @@ module.exports = {
         const { id } = req.params;
         const idO = req.headers.authorization;
 
-        function isEmpty(obj) {
-            return Object.keys(obj).length === 0;
-        }
-
         try {
-            const find = await connection('ongs').where('id', id)
-            .select('*');
+            const find = await connection('ongs')
+            .where('id', id)
+            .select('id')
+            .first();
 
-            if(!isEmpty(find)){
+            if(!helpers.isEmpty(find)){
                     
                 const ongs = await connection('ongs')
                 .where('id', id)
@@ -67,7 +88,33 @@ module.exports = {
 
     },
 
-    show(req, res){
-        return res.status(200).json("'FOii'");     
+    async update(req, res){
+
+        const {name, email, whatsapp, city, uf} = req.body;           
+        const { id } = req.params;
+    
+        const find = await connection('ongs').where('id', id)
+        .select('id')
+        .first();
+
+        if(!helpers.isEmpty(find)){
+
+            try {
+                await connection('ongs').where('id', id).update({
+                    name,
+                    email,
+                    whatsapp,
+                    city,
+                    uf,
+                });
+                return res.status(200).json({"msg": "Atualizado com sucesso!"});                
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json("Erro! Tente novamente...");
+            }
+        }else{
+            return res.status(500).json("Nada Localizado!");
+        }
+
     }
 };

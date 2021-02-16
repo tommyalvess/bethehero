@@ -22,10 +22,12 @@ const routes = express.Router();
 // Resquest Body: criar ou alterar o recurso
 
 
+routes.get('/profile', PerfileOngsController.index);
 
 routes.post('/sessions', SessionControler.create);
 
 routes.get('/ongs', OngsController.index);
+routes.get('/ong/:id', OngsController.show);
 routes.post('/ongs', celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required(),
@@ -35,8 +37,17 @@ routes.post('/ongs', celebrate({
         uf: Joi.string().required().length(2),
     })
 }), OngsController.create);
+routes.delete('/ongs/:id', OngsController.delete);
+routes.put('/ong/:id', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        name: Joi.string().required(),
+        email: Joi.string().required(),
+        whatsapp: Joi.number().required().min(13),
+        city: Joi.string().required(),
+        uf: Joi.string().required().length(2),
+    })
+ }), OngsController.update);
 
-routes.get('/profile', PerfileOngsController.index);
 
 routes.post('/incidents', celebrate({
     [Segments.BODY]: Joi.object().keys({
@@ -46,6 +57,15 @@ routes.post('/incidents', celebrate({
     })
 }), IncidentsController.create);
 routes.get('/incidents', IncidentsController.index);
-routes.delete('/incidents/:id', IncidentsController.delete);
+routes.delete('/incident/:id', IncidentsController.delete);
+routes.put('/incident/:id',celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        title: Joi.string().required(),
+        descriptions: Joi.string().required(),
+        value: Joi.number().required(),
+    })
+}), 
+IncidentsController.update);
+
 
 module.exports = routes;

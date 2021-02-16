@@ -12,10 +12,9 @@ module.exports = {
       database : 'dc4f3b5q6k6bsq',    
       ssl: { rejectUnauthorized: false }
     },
-    
     migrations: {
       directory: './src/database/migrations'
-    }
+    }     
   },
 // simula a preodução p/ time dev possa testar online
   staging: {
@@ -25,9 +24,8 @@ module.exports = {
       database: 'dbapptransescolar',
       user:     'app_transescolar',
       password: 'app125517',
-      charset: 'utf8',
+      charset: 'utf8'
     },
-
     migrations: {
       directory: './src/database/migrations'
     }
@@ -43,7 +41,6 @@ module.exports = {
       database : 'dc4f3b5q6k6bsq',    
       ssl: { rejectUnauthorized: false }
     },
-    
     migrations: {
       directory: './src/database/migrations'
     }
