@@ -57,6 +57,7 @@ routes.post('/incidents', celebrate({
     })
 }), IncidentsController.create);
 routes.get('/incidents', IncidentsController.index);
+routes.get('/incident/:id', IncidentsController.show);
 routes.delete('/incident/:id', IncidentsController.delete);
 routes.put('/incident/:id',celebrate({
     [Segments.BODY]: Joi.object().keys({

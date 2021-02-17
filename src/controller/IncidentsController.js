@@ -2,8 +2,24 @@ const { update } = require('../database/connection');
 const connection = require('../database/connection');
 
 const helpers = require('../utils/helper');
+const { show } = require('./OngsController');
 
 module.exports = {
+    //listar incidents por id da ONG
+    async show(req, res){
+        const { id } = req.params;
+        const { page = 1 } = req.query;
+
+        const incidents = await connection('incidents')
+        .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
+        .where('ong_id', id)
+        .limit(5)
+        .offset((page - 1) * 5)
+        .select('incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf');
+
+        return res.status(200).json(incidents);
+    },
+
     //listagem de dados
     async index(req, res){
         const { page = 1 } = req.query;
