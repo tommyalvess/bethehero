@@ -10,7 +10,9 @@ module.exports = {
         const { id } = req.params;
         const { page = 1 } = req.query;
 
-        const [count] = await connection('incidents').count({count: '*'});
+        const [count] = await connection('incidents')
+        .where('ong_id', id)
+        .count({count: '*'});
 
         const incidents = await connection('incidents')
         .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
