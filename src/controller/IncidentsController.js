@@ -10,6 +10,8 @@ module.exports = {
         const { id } = req.params;
         const { page = 1 } = req.query;
 
+        const [count] = await connection('incidents').count({count: '*'});
+
         const incidents = await connection('incidents')
         .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
         .where('ong_id', id)
@@ -17,6 +19,10 @@ module.exports = {
         .offset((page - 1) * 5)
         .select('incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf');
 
+        //Enviado para o cabeçalho o tatal de registro
+        res.header('X-Total-Count', count.count);
+        console.log(count.count);
+        
         return res.status(200).json(incidents);
     },
 
