@@ -1,0 +1,6 @@
+{
+    "host": "smtp.sparkpostmail.com",
+    "port": "2525",
+    "user":"SMTP_Injection",
+    "pass": "1a3721667ff235bda6a473043c26bfd0ee2cc899"
+}

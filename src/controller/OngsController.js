@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const connection = require('../database/connection');
 const helpers = require('../utils/helper');
+const mailer = require('../modules/mailer');
 
 
 // quando o noide chegar nesse codigo ele vai esperar e depois continuar.
@@ -50,9 +51,20 @@ module.exports = {
             uf,
         });
 
-        console.log(data);
+        mailer.sendMail({
+            from: 'suporte@apptransescolar.com.br',
+            to: email,
+            subject: 'Seu ID',
+            template: 'auth/forgotPass',
+            context: { id },
+        }, (err) => {
+            console.log(err);
+            if(err)
+                return res.status(400).send({ error: 'Não foi possível enviar o email de recuperação de senha'});
 
-        return res.json({id});
+            console.log('Foi');
+            return res.json({id});
+        });
     },
 
     async delete(req, res){
