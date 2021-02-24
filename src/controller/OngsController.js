@@ -60,7 +60,7 @@ module.exports = {
         }, (err) => {
             console.log(err);
             if(err)
-                return res.status(400).send({ error: 'Não foi possível enviar o email de recuperação de senha'});
+                return res.status(400).send({ error: 'Não foi possível enviar o email'});
 
             console.log('Foi');
             return res.json({id});
