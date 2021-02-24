@@ -62,7 +62,7 @@ module.exports = {
             if(err)
                 return res.status(500).send({ error: 'Não foi possível enviar o email', id: id);
                                              
-            return res.json({id});
+            return res.status(200).json({id});
         });
     },
 
