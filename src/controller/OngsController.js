@@ -51,7 +51,7 @@ module.exports = {
         }, (err) => {
             console.log(err);
             if(err)
-                return res.send({ error: 'Não foi possível enviar o email'});
+                return res.status(500).send({ error: 'Não foi possível enviar o email'});
 
             connection('ongs').insert({
                 id,
