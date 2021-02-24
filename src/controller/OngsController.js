@@ -41,6 +41,15 @@ module.exports = {
         const data = req.body;
         
         const id = crypto.randomBytes(4).toString('HEX');
+        
+        await connection('ongs').insert({
+                id,
+                name,
+                email,
+                whatsapp,
+                city,
+                uf,
+            });
 
         mailer.sendMail({
             from: 'suporte@apptransescolar.com.br',
@@ -52,15 +61,7 @@ module.exports = {
             console.log(err);
             if(err)
                 return res.status(500).send({ error: 'Não foi possível enviar o email', id: {id});
-
-            connection('ongs').insert({
-                id,
-                name,
-                email,
-                whatsapp,
-                city,
-                uf,
-            });
+                                             
             return res.json({id});
         });
     },
