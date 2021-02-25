@@ -43,13 +43,13 @@ module.exports = {
         const id = crypto.randomBytes(4).toString('HEX');
         
         await connection('ongs').insert({
-                id,
-                name,
-                email,
-                whatsapp,
-                city,
-                uf,
-            });
+            id,
+            name,
+            email,
+            whatsapp,
+            city,
+            uf,
+        });
 
         mailer.sendMail({
             from: 'suporte@apptransescolar.com.br',
@@ -60,9 +60,10 @@ module.exports = {
         }, (err) => {
             console.log(err);
             if(err)
-                return res.status(500).send({ error: 'Não foi possível enviar o email', id: id);
-                                             
-            return res.status(200).json({id});
+                return res.status(400).send({ error: 'Não foi possível enviar o email de recuperação de senha', id: id});
+
+            console.log('Foi');
+            return res.json({id});
         });
     },
 
